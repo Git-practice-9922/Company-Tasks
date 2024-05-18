@@ -1,1 +1,1 @@
-frontend-platform
+Legal-General-Digital/frontend-platform
