@@ -1,31 +1,41 @@
-name: Replace Team Names
+name: Replace Strings ALL
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    # inputs:
+    #     repository:
+    #       type: string
+    #       description: 'Repository name'
+    #       required: true
+    #     organisation:
+    #       description: 'organisation name'
+    #       type: string
+    #       required: true_or_false
 
 jobs:
-  replace-team-names:
+  replace-strings:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_GITHUB_PAT }}
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.13.0-alpha.6
-      
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pandas openpyxl
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13.0-alpha.6
 
-    - name: Run replace team names script
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        python string-replace-teams.py
+      - name: Install dependencies
+        run: |  
+          python -m pip install --upgrade pip
+          pip install openpyxl
+
+      - name: Replace Strings in YML files
+        run: |
+          python string-replaces-all.py
+        env:
+          EXCEL_FILE: "team_mapping.xlsx"
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+        shell: bash
