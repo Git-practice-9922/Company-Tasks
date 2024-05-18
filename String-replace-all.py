@@ -13,6 +13,8 @@ def replace_strings(excel_path, repo_path):
         os.path.abspath(os.path.join(repo_path, 'input_migration')),
         os.path.abspath(os.path.join(repo_path, '.git')),
         os.path.abspath(os.path.join(repo_path, 'script_migration'))
+        os.path.abspath(os.path.join(repo_path, 'String-replace-all.py'))
+        os.path.abspath(os.path.join(repo_path, 'team_mapping.xlsx'))
     ]
 
     # Get list of all files in repository (excluding .git directory)
