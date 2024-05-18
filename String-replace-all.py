@@ -12,8 +12,8 @@ def replace_strings(excel_path, repo_path):
     exclude_dirs = [
         os.path.abspath(os.path.join(repo_path, 'input_migration')),
         os.path.abspath(os.path.join(repo_path, '.git')),
-        os.path.abspath(os.path.join(repo_path, 'script_migration'))
-        os.path.abspath(os.path.join(repo_path, 'String-replace-all.py'))
+        os.path.abspath(os.path.join(repo_path, 'script_migration')),
+        os.path.abspath(os.path.join(repo_path, 'String-replace-all.py')),
         os.path.abspath(os.path.join(repo_path, 'team_mapping.xlsx'))
     ]
 
