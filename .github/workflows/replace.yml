@@ -34,7 +34,7 @@ jobs:
 
       - name: Replace Strings in YML files
         run: |
-          python string-replaces-all.py
+          python String-replace-all.py
         env:
           EXCEL_FILE: "team_mapping.xlsx"
           GITHUB_WORKSPACE: ${{ github.workspace }}
