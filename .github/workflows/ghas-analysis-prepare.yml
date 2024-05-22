@@ -65,11 +65,48 @@ jobs:
         
             echo "Completed processing all repositories. Results saved in ${OUTPUT_FILE}"
 
-      - name: Upload branches and commits artifact
-        uses: actions/upload-artifact@v3
-        with:
+      #- name: Upload branches and commits artifact
+       # uses: actions/upload-artifact@v3
+       # with:
+        #    name: branches_and_commits
+        #    path: ${{ github.workspace }}/source-repo/output/branches_and_commits.txt
+
+  convert-to-excel:
+    runs-on: ubuntu-latest
+    needs: find-strings
+            
+    steps:
+        - name: Download branches and commits artifact
+          uses: actions/download-artifact@v4
+          with:
             name: branches_and_commits
-            path: ${{ github.workspace }}/source-repo/output/branches_and_commits.txt
+            path: ${{ github.workspace }}/source-repo/output
+            
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.10'
+            
+        - name: Install dependencies
+          run: pip install pandas openpyxl
+            
+        - name: Convert TXT to Excel
+          run: |
+                python -c "
+                import pandas as pd
+            
+                # Read the tab-separated text file
+                df = pd.read_csv('${{ github.workspace }}/source-repo/output/branches_and_commits.txt', sep='\t', header=None, names=['Repository', 'Branch', 'Commit SHA'])
+            
+                # Convert the DataFrame to an Excel file
+                df.to_excel('${{ github.workspace }}/source-repo/output/branches_and_commits.xlsx', index=False)
+                    "
+            
+        - name: Upload Excel artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: branches_and_commits_excel
+            path: ${{ github.workspace }}/source-repo/output/branches_and_commits.xlsx
         
         
       
