@@ -66,7 +66,7 @@ jobs:
             echo "Completed processing all repositories. Results saved in ${OUTPUT_FILE}"
 
       - name: Upload branches and commits artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
             name: branches_and_commits
             path: ${{ github.workspace }}/source-repo/output/branches_and_commits.txt
@@ -80,7 +80,7 @@ jobs:
           uses: actions/download-artifact@v4
           with:
             name: branches_and_commits
-            path: ${{ github.workspace }}/source-repo/output
+            path: ${{ github.workspace }}/source-repo/output/branches_and_commits.txt
             
         - name: Set up Python
           uses: actions/setup-python@v5
