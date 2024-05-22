@@ -16,8 +16,8 @@ jobs:
 
       - name: Create output directory
         run: |
-          if [ ! -d "${{ github.workspace }}/source-repo/output" ]; then
-            mkdir -p "${{ github.workspace }}/source-repo/output"
+          if [ ! -d "${{ github.workspace }}/output" ]; then
+            mkdir -p "${{ github.workspace }}/output"
           fi
 
       - name: Iterate Over Repos
@@ -26,13 +26,13 @@ jobs:
 
             # Define the GitHub token and output file
             GITHUB_TOKEN="${{ secrets.GH_GITHUB_PAT }}"
-            OUTPUT_FILE="${{ github.workspace }}/source-repo/output/branches_and_commits.txt"
+            OUTPUT_FILE="${{ github.workspace }}/output/branches_and_commits.txt"
         
             # Clear or create the output file
             > $OUTPUT_FILE
         
             # Read the repositories from the file
-            mapfile -t repositories < "${{ github.workspace }}/source-repo/repositories.txt"
+            mapfile -t repositories < "${{ github.workspace }}/repositories.txt"
         
             # Loop through each repository
             for repo in "${repositories[@]}"; do
