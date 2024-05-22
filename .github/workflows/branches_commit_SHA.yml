@@ -1,4 +1,4 @@
-name: Prepare for GHAS Analysis Step
+name: Branches and Commit SHA
 
 on:
   workflow_dispatch:
