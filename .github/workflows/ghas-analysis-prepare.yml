@@ -14,10 +14,13 @@ jobs:
           token: ${{ secrets.GH_GITHUB_PAT }}
           path: ./source-repo
 
+      - name: Set up jq
+        run: sudo apt-get install -y jq
+
       - name: Create output directory
         run: |
-          if [ ! -d "${{ github.workspace }}/output" ]; then
-            mkdir -p "${{ github.workspace }}/output"
+          if [ ! -d "${{ github.workspace }}/source-repo/output" ]; then
+            mkdir -p "${{ github.workspace }}/source-repo/output"
           fi
 
       - name: Iterate Over Repos
@@ -26,13 +29,13 @@ jobs:
 
             # Define the GitHub token and output file
             GITHUB_TOKEN="${{ secrets.GH_GITHUB_PAT }}"
-            OUTPUT_FILE="${{ github.workspace }}/output/branches_and_commits.txt"
+            OUTPUT_FILE="${{ github.workspace }}/source-repo/output/branches_and_commits.txt"
         
             # Clear or create the output file
             > $OUTPUT_FILE
         
             # Read the repositories from the file
-            mapfile -t repositories < "${{ github.workspace }}/repositories.txt"
+            mapfile -t repositories < "${{ github.workspace }}/source-repo/repositories.txt"
         
             # Loop through each repository
             for repo in "${repositories[@]}"; do
@@ -61,6 +64,12 @@ jobs:
             done
         
             echo "Completed processing all repositories. Results saved in ${OUTPUT_FILE}"
+
+      - name: Upload branches and commits artifact
+        uses: actions/upload-artifact@v3
+        with:
+            name: branches_and_commits
+            path: ${{ github.workspace }}/source-repo/output/branches_and_commits.txt
         
         
       
