@@ -28,7 +28,7 @@ def replace_strings(excel_path, repo_path):
 
     print(f"All files: {all_files}")
 
-'''
+
     # Iterate through all files
     for file_path in all_files:
         print(f"Processing file: {file_path}")  # Print the file pat
@@ -40,17 +40,25 @@ def replace_strings(excel_path, repo_path):
             # Iterate through Excel rows
             for row in sheet.iter_rows(min_row=2, values_only=True):
                 original_string = row[0]
-                replacement_string = row[1]
+                target_value = row[1].lower()
+                if target_value == "confidential":
+                    replacement_string = "Legal-general-Confidential"  
 
-                # Replace strings in file content
-                content = content.replace(original_string, replacement_string)
+                    # Replace strings in file content
+                    content = content.replace(original_string, replacement_string)
+
+                elif target_value == "shared":
+                    replacement_string = "Legal-general-shared"  
+
+                    # Replace strings in file content
+                    content = content.replace(original_string, replacement_string)
 
             # Write back to the file
             with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(content)
         except Exception as e:
             print(f"Error processing file {file_path}: {str(e)}")
-'''
+
 if __name__ == "__main__":
     excel_file = os.getenv('EXCEL_FILE')
     github_workspace = os.getenv('GITHUB_WORKSPACE')
