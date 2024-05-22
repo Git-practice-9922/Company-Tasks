@@ -1,9 +1,6 @@
 name: Replace Organization Strings
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
