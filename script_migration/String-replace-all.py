@@ -27,6 +27,7 @@ def replace_strings(excel_path, repo_path):
 
     print(f"All files: {all_files}")
 
+'''
     # Iterate through all files
     for file_path in all_files:
         print(f"Processing file: {file_path}")  # Print the file pat
@@ -48,7 +49,7 @@ def replace_strings(excel_path, repo_path):
                 f.write(content)
         except Exception as e:
             print(f"Error processing file {file_path}: {str(e)}")
-
+'''
 if __name__ == "__main__":
     excel_file = os.getenv('EXCEL_FILE')
     github_workspace = os.getenv('GITHUB_WORKSPACE')
