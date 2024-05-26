@@ -1,4 +1,4 @@
-name: Branches and Commit SHA
+name: Get Environment Data
 
 on:
   workflow_dispatch:
