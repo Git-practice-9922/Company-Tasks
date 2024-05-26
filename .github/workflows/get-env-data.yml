@@ -66,10 +66,10 @@ jobs:
             echo "Completed processing all repositories. Results saved in ${OUTPUT_FILE}"
         
 
-      - name: Upload branches and commits artifact
+      - name: Upload environments and settings data
         uses: actions/upload-artifact@v4
         with:
-            name: branches_and_commits.txt
+            name: environments_and_settings.txt
             path: ${{ github.workspace }}/source-repo/output
 
   
