@@ -29,7 +29,7 @@ jobs:
 
             # Define the GitHub token and output file
             GITHUB_TOKEN="${{ secrets.GH_GITHUB_PAT }}"
-            OUTPUT_FILE="${{ github.workspace }}/source-repo/output/environments_and_settings.txt"
+            OUTPUT_FILE="${{ github.workspace }}/source-repo/output/environments_and_settings.json"
         
             # Clear or create the output file
             > $OUTPUT_FILE
@@ -69,7 +69,7 @@ jobs:
       - name: Upload environments and settings data
         uses: actions/upload-artifact@v4
         with:
-            name: environments_and_settings.txt
+            name: environments_and_settings.json
             path: ${{ github.workspace }}/source-repo/output
 
   
