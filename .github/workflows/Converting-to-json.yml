@@ -1,13 +1,10 @@
-name: Creating Json Input File
+name: creating json input file
 
 on:
   workflow_dispatch:
 
 jobs:
-  creating-json:
-    env:
-        INPUT_FILE: "${{ github.workspace }}/source-repo/repositories.xlsx"
-        OUTPUT_FILE: "${{ github.workspace }}/source-repo/output/repositories.json"
+  converting-json:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,18 +14,8 @@ jobs:
           token: ${{ secrets.GH_GITHUB_PAT }}
           path: ./source-repo
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-         python-version: '3.10'
-    
-      - name: Install dependencies
-        run: |
-            python -m pip install --upgrade pip
-            pip install openpyxl
-
       - name: Set up jq
-        run: sudo apt-get install -y jq
+        run: sudo apt-get install xlsx2csv jq
 
       - name: Create output directory
         run: |
@@ -37,14 +24,54 @@ jobs:
           fi
 
       - name: Iterate Over Repos
-        run: python generate_json.py
+        run: |
+            #!/bin/bash
+
+            # Define the input Excel file and intermediate CSV file
+            INPUT_EXCEL="${{ github.workspace }}/source-repo/repositories.xlsx"
+            INTERMEDIATE_CSV="${{ github.workspace }}/source-repo/intermediate.csv"
+            OUTPUT_JSON="${{ github.workspace }}/source-repo/output/repositories.json"
+        
+            # Convert Excel to CSV
+            xlsx2csv "$INPUT_EXCEL" "$INTERMEDIATE_CSV"
+        
+            # Initialize the JSON object
+            echo "{" > $OUTPUT_JSON
+        
+            # Read the CSV file and process each line
+            awk -F',' 'NR>1 {
+                repo_name = $1
+                classification = $2
+        
+                if (classification == "shared") {
+                    organisation = "Legal-and-General-Shared"
+                } else if (classification == "confidential") {
+                    organisation = "Legal-and-General-Confidential"
+                } else {
+                    organisation = "Unknown-Classification"
+                }
+        
+                # Print the JSON entry
+                printf "    \"%s\": {\n        \"repository\": \"%s\",\n        \"organisation\": \"%s\"\n    },\n", repo_name, repo_name, organisation
+            }' "$INTERMEDIATE_CSV" >> $OUTPUT_JSON
+        
+            # Remove the trailing comma from the last entry
+            sed -i '$ s/,$//' $OUTPUT_JSON
+        
+            # Close the JSON object
+            echo "}" >> $OUTPUT_JSON
+        
+            # Clean up intermediate CSV file
+            rm "$INTERMEDIATE_CSV"
+        
+            echo "JSON file created at $OUTPUT_JSON"
         
         
 
       - name: Upload environments and settings data
         uses: actions/upload-artifact@v4
         with:
-            name: repositories.json
+            name: environments_and_settings.json
             path: ${{ github.workspace }}/source-repo/output
 
   
