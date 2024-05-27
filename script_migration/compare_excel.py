@@ -14,8 +14,8 @@ from pathlib import Path  # Core Python Module
 import pandas as pd  # pip install pandas openpyxl
 import xlwings as xw  # pip install xlwings
 
-initial_version = Path.cwd() / "Source-file.xlsx"
-updated_version = Path.cwd() / "Target-file.xlsx"
+initial_version = Path.cwd() / input("Source File: " )
+updated_version = Path.cwd() / input("Target File: " )
 
 df_initial = pd.read_excel(initial_version)
 print(df_initial.head(3))
