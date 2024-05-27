@@ -72,6 +72,52 @@ jobs:
             name: environments_and_settings.json
             path: ${{ github.workspace }}/source-repo/output
 
+
+  create-new-env:
+    runs-on: ubuntu-latest
+    needs: environment-data
+
+    steps:
+      - name: create the environment
+        run: |
+            #!/bin/bash
+
+            # Define the GitHub token for the source and target organizations and the input file
+            TARGET_GITHUB_TOKEN="${{ secrets.GH_GITHUB_PAT }}"
+            INPUT_FILE="${{ github.workspace }}/source-repo/output/environments_and_settings.json"
+            TARGET_ORG_NAME="ops-team-kp"
+        
+            # Function to create an environment in the target organization
+            create_environment() {
+                local target_org=$1
+                local repo_name=$2
+                local env_name=$3
+                local settings=$4
+        
+                # Create the environment in the target repository
+                curl -s -L \
+                    -X PUT \
+                    -H "Accept: application/vnd.github+json" \
+                    -H "Authorization: Bearer ${TARGET_GITHUB_TOKEN}" \
+                    -H "X-GitHub-Api-Version: 2022-11-28" \
+                    -d "$settings" \
+                    "https://api.github.com/repos/$target_org/$repo_name/environments/$env_name"
+                }
+        
+            # Read the JSON file and process each entry
+            jq -c '.[]' "$INPUT_FILE" | while read -r entry; do
+                repo_name=$(echo "$entry" | jq -r '.repository')
+                env_name=$(echo "$entry" | jq -r '.environment')
+                env_settings=$(echo "$entry" | jq -c '.settings')
+        
+                echo "Creating environment: $env_name in repository: $TARGET_ORG_NAME/$repo_name"
+                create_environment "$TARGET_ORG_NAME" "$repo_name" "$env_name" "$env_settings"
+            done
+        
+            echo "Completed processing all repositories and creating environments in the target organization."
+        
+
+
   
         
         
