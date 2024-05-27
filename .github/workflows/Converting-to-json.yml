@@ -32,7 +32,7 @@ jobs:
             OUTPUT_FILE="${{ github.workspace }}/source-repo/output/repositories.json"
         
             # Run the Python script to generate the JSON file
-            python3 script_migration/generate_json.py "$INPUT_FILE" "$OUTPUT_FILE"
+            python3 generate_json.py "$INPUT_FILE" "$OUTPUT_FILE"
         
         
 
