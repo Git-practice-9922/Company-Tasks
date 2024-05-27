@@ -30,7 +30,7 @@ jobs:
             # Define the input Excel file and intermediate CSV file
             INPUT_EXCEL="${{ github.workspace }}/source-repo/repositories.xlsx"
             INTERMEDIATE_CSV="${{ github.workspace }}/source-repo/intermediate.csv"
-            OUTPUT_JSON="${{ github.workspace }}/source-repo/output/excel-to-txt.txt"
+            OUTPUT_TXT="${{ github.workspace }}/source-repo/output/excel-to-txt.txt"
         
             # Convert Excel to CSV
             xlsx2csv "$INPUT_EXCEL" "$INTERMEDIATE_CSV"
@@ -65,7 +65,7 @@ jobs:
       - name: Upload txt data
         uses: actions/upload-artifact@v4
         with:
-            name: repositories_input.txt
+            name: rexcel-to-txt.txt.txt
             path: ${{ github.workspace }}/source-repo/output
 
   
