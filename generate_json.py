@@ -1,26 +1,21 @@
 import pandas as pd
 import json
-import sys
-import os
 
-# Read the input Excel file
-#input_file = sys.argv[1]
-#output_file = sys.argv[2]
+# Define the input and output files
+input_excel = "${{ github.workspace }}/source-repo/repositories.xlsx"
+output_json = "${{ github.workspace }}/source-repo/output/repositories.json"
 
-input_file = os.environ("INPUT_FILE")
-output_file = os.environ("OUTPUT_FILE")
+# Read the Excel file
+df = pd.read_excel(input_excel)
 
-# Load the Excel sheet into a DataFrame
-df = pd.read_excel(input_file)
+# Create a dictionary to hold the JSON data
+repositories_dict = {}
 
-# Initialize the JSON object
-json_data = {}
-
-# Loop through each row in the DataFrame
-for index, row in df.iterrows():
+# Loop through the dataframe and construct the dictionary
+for _, row in df.iterrows():
     repo_name = row['Repository Name']
     classification = row['Classification']
-
+    
     # Determine the organization based on the classification
     if classification == 'shared':
         organisation = 'Legal-and-General-Shared'
@@ -28,15 +23,15 @@ for index, row in df.iterrows():
         organisation = 'Legal-and-General-Confidential'
     else:
         organisation = 'Unknown-Classification'
-
-    # Add the repository details to the JSON object
-    json_data[repo_name] = {
+    
+    # Add the entry to the dictionary
+    repositories_dict[repo_name] = {
         'repository': repo_name,
         'organisation': organisation
     }
 
-# Write the JSON object to the output file
-with open(output_file, 'w') as f:
-    json.dump(json_data, f, indent=4)
+# Write the dictionary to a JSON file
+with open(output_json, 'w') as json_file:
+    json.dump(repositories_dict, json_file, indent=4)
 
-print(f"JSON file created at {output_file}")
+print(f"JSON file created at {output_json}")
