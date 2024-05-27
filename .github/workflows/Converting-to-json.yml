@@ -14,7 +14,7 @@ jobs:
           token: ${{ secrets.GH_GITHUB_PAT }}
           path: ./source-repo
 
-      - name: Set up jq
+      - name: Set up jq and xlsx2csv
         run: sudo apt-get install xlsx2csv jq
 
       - name: Create output directory
@@ -23,7 +23,7 @@ jobs:
             mkdir -p "${{ github.workspace }}/source-repo/output"
           fi
 
-      - name: Iterate Over Repos
+      - name: Iterate Over Excel
         run: |
             #!/bin/bash
 
@@ -68,10 +68,10 @@ jobs:
         
         
 
-      - name: Upload environments and settings data
+      - name: Upload json data
         uses: actions/upload-artifact@v4
         with:
-            name: environments_and_settings.json
+            name: repositories_input.json
             path: ${{ github.workspace }}/source-repo/output
 
   
