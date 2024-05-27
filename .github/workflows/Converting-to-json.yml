@@ -4,7 +4,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  environment-data:
+  creating-json:
+    env:
+        INPUT_FILE: "${{ github.workspace }}/source-repo/repositories.xlsx"
+        OUTPUT_FILE: "${{ github.workspace }}/source-repo/output/repositories.json"
     runs-on: ubuntu-latest
 
     steps:

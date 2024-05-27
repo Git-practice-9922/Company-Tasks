@@ -1,10 +1,14 @@
 import pandas as pd
 import json
 import sys
+import os
 
 # Read the input Excel file
-input_file = sys.argv[1]
-output_file = sys.argv[2]
+#input_file = sys.argv[1]
+#output_file = sys.argv[2]
+
+input_file = os.environ("INPUT_FILE")
+output_file = os.environ("OUTPUT_FILE")
 
 # Load the Excel sheet into a DataFrame
 df = pd.read_excel(input_file)
