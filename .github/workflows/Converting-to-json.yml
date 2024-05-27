@@ -27,15 +27,7 @@ jobs:
           fi
 
       - name: Iterate Over Repos
-        run: |
-            #!/bin/bash
-
-            # Define the input Excel file and output JSON file
-            #INPUT_FILE="${{ github.workspace }}/source-repo/repositories.xlsx"
-            #OUTPUT_FILE="${{ github.workspace }}/source-repo/output/repositories.json"
-        
-            # Run the Python script to generate the JSON file
-            python3 generate_json.py
+        run: python generate_json.py
         
         
 
