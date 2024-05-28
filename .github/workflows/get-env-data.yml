@@ -78,6 +78,12 @@ jobs:
     needs: environment-data
 
     steps:
+      - name: Download environments and settings data
+        uses: actions/download-artifact@v4
+        with:
+            name: environments_and_settings.json
+            path: ${{ github.workspace }}/source-repo/output
+            
       - name: create the environment
         run: |
             #!/bin/bash
