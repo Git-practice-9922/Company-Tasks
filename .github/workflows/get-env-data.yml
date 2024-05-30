@@ -30,10 +30,32 @@ jobs:
             # Define the GitHub token and output file
             GITHUB_TOKEN="${{ secrets.GH_GITHUB_PAT }}"
             OUTPUT_FILE="${{ github.workspace }}/source-repo/output/environments_and_settings.json"
-        
+            
             # Clear or create the output file
             > $OUTPUT_FILE
-        
+            
+            environment_exist() {
+            
+                local org_name=$1
+                local repo_name=$2
+                local environment=$3
+            
+            
+                # check the env is there or not
+                response=(curl -L \
+                    -H "Accept: application/vnd.github+json" \
+                    -H "Authorization: Bearer <YOUR-TOKEN>" \
+                    -H "X-GitHub-Api-Version: 2022-11-28" \
+                    https://api.github.com/repos/$org_name/$repo_name/environments/$environment)
+            
+                if [ "$response" == "200" ]; then
+                    return 0
+                else
+                    return 1
+                fi
+            }
+            
+            
             # Read the repositories from the file
             mapfile -t repositories < "${{ github.workspace }}/source-repo/repositories.txt"
         
@@ -48,19 +70,24 @@ jobs:
                     -H "Authorization: Bearer ${GITHUB_TOKEN}" \
                     -H "X-GitHub-Api-Version: 2022-11-28" \
                     "https://api.github.com/repos/$org_name/$repo_name/environments" | jq -r '.environments[].name')
-            
+        
                 # Loop through each environment
                 for environment in $environments; do
-                    # Get the environment settings
-                    environment_settings=$(curl -s -L \
-                        -H "Accept: application/vnd.github+json" \
-                        -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-                        -H "X-GitHub-Api-Version: 2022-11-28" \
-                        "https://api.github.com/repos/$org_name/$repo_name/environments/$environment" | jq '{can_admins_bypass, protection_rules, deployment_branch_policy}')
-                
-                    # Save the results to the output file
-                    echo -e "Repository: ${org_name}/${repo_name}\nEnvironment: ${environment}\nSettings:\n${environment_settings}\n" >> $OUTPUT_FILE
-                done
+        
+                    if environment_exist "$org_name" "$repo_name" "$environment"; then
+                        # Get the environment settings
+                        environment_settings=$(curl -s -L \
+                            -H "Accept: application/vnd.github+json" \
+                            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+                            -H "X-GitHub-Api-Version: 2022-11-28" \
+                            "https://api.github.com/repos/$org_name/$repo_name/environments/$environment" | jq '{can_admins_bypass, protection_rules, deployment_branch_policy}')
+                    
+                        # Save the results to the output file
+                        echo -e "Repository: ${org_name}/${repo_name}\nEnvironment: ${environment}\nSettings:\n${environment_settings}\n" >> $OUTPUT_FILE
+        
+                    else
+                        echo "The environment ${environment}, is not present here in repo: ${repo_name}!!"
+                done 
             done
         
             echo "Completed processing all repositories. Results saved in ${OUTPUT_FILE}"
