@@ -1,4 +1,4 @@
-name: Get Environment Data
+name: Create ENV with Json
 
 on:
   workflow_dispatch:
