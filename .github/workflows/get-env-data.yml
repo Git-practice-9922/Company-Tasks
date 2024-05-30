@@ -87,6 +87,8 @@ jobs:
         
                     else
                         echo "The environment ${environment}, is not present here in repo: ${repo_name}!!"
+                    
+                    fi    
                 done 
             done
         
