@@ -109,10 +109,10 @@ jobs:
                 #Read the Excel file
                 
                 df = pd.read_excel('${{ github.workspace }}/source-repo/output/branches_and_commits.xlsx')
+                print(df)
+                #df = df[df["Branch"].str.contains("dependabot/") == False]
 
-                df = df[~df["Branch"].str.contains("dependabot/") == False]
-
-                df.to_excel('${{ github.workspace }}/source-repo/output/Final_branches_and_commits.xlsx', index = False, sheet_name= 'Final_sheet')
+                #df.to_excel('${{ github.workspace }}/source-repo/output/Final_branches_and_commits.xlsx', index = False, sheet_name= 'Final_sheet')
 
                 
                 "    
