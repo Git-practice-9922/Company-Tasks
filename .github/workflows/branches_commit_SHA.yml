@@ -110,7 +110,7 @@ jobs:
                 
                 df = pd.read_excel('${{ github.workspace }}/source-repo/output/branches_and_commits.xlsx')
 
-                df = df[df["Branch"].str.contains("dependabots/*") == False]
+                df = df[df["Branch"].str.contains("dependabot/*") == False]
 
                 df.to_excel("Final_branches_and_commits.xlsx", index = False, sheet_name= 'Final_sheet')
 
