@@ -101,25 +101,11 @@ jobs:
                 # Convert the DataFrame to an Excel file
                 df.to_excel('${{ github.workspace }}/source-repo/output/branches_and_commits.xlsx', index=False)
                     "
-        - name: Dropping Rows with "dependabots/*"
-          run: |
-                python -c "
-                import pandas as pd
-
-                #Read the Excel file
-                
-                df = pd.read_excel('${{ github.workspace }}/source-repo/output/branches_and_commits.xlsx')
-                print(df)
-                #df = df[df["Branch"].str.contains("dependabot/") == False]
-
-                #df.to_excel('${{ github.workspace }}/source-repo/output/Final_branches_and_commits.xlsx', index = False, sheet_name= 'Final_sheet')
-
-                
-                "    
+        
         - name: Upload Excel artifact
           uses: actions/upload-artifact@v4
           with:
-            name: Final_branches_and_commits.xlsx
+            name: branches_and_commits.xlsx
             path: ${{ github.workspace }}/source-repo/output
         
         
