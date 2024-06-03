@@ -90,8 +90,6 @@ jobs:
               cd ./source-repo
               pwd
 
-              rm -rf .git/
-              git init
               git config --global user.name 'KrushnaPimpale'
               git config --global user.email 'kpimple656@gmail.com'
               git add .
