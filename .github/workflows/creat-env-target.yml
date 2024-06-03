@@ -69,9 +69,9 @@ jobs:
 
             # Read the JSON file and process each entry
             jq -c '.[]' "$INPUT_FILE" | while read -r entry; do
-                repo_name=$(echo "$entry" | jq -r '.repository')
-                env_name=$(echo "$entry" | jq -r '.environment')
-                env_settings=$(echo "$entry" | jq -c '.settings')
+                repo_name=$(echo "$entry" | jq -r '.Repository')
+                env_name=$(echo "$entry" | jq -r '.Environment')
+                env_settings=$(echo "$entry" | jq -c '.Settings')
 
                 # Check if the repository exists in the target organization
                 if repository_exists "$TARGET_ORG_NAME" "$repo_name"; then
