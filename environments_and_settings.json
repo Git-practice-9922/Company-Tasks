@@ -1,6 +1,6 @@
 [
     {
-      "Repository": "Git-practice-9922/Company-Tasks",
+      "Repository": "Company-Tasks",
       "Environment": "test-3",
       "Settings": {
         "can_admins_bypass": true,
