@@ -84,18 +84,9 @@ jobs:
 
             echo "Completed processing all repositories and creating environments in the target organization."
 
-      - name: Commit and push changes
-        
-        run: |
-              cd ./source-repo
-              pwd
+      
+         
 
-              git config --global user.name 'KrushnaPimpale'
-              git config --global user.email 'kpimple656@gmail.com'
-              git add .
-              git commit -m "Creating Environments"--allow-empty
-              git push -f origin main     
-        
 
 
   
