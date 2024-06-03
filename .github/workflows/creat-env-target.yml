@@ -41,7 +41,7 @@ jobs:
 
                 # Create the environment in the target repository
                 curl -s -L \
-                    -X POST \
+                    -X PUT \
                     -H "Accept: application/vnd.github+json" \
                     -H "Authorization: Bearer ${TARGET_GITHUB_TOKEN}" \
                     -H "X-GitHub-Api-Version: 2022-11-28" \
