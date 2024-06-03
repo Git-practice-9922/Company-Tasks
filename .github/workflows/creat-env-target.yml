@@ -30,7 +30,7 @@ jobs:
             # Define the GitHub token for the target organization and the input file
             TARGET_GITHUB_TOKEN="${{ secrets.GH_GITHUB_PAT }}"
             INPUT_FILE="${{ github.workspace }}/source-repo/environments_and_settings.json"
-            TARGET_ORG_NAME="ops-team-kp"
+            TARGET_ORG_NAME="Git-practice-9922"
 
             # Function to create an environment in the target organization
             create_environment() {
